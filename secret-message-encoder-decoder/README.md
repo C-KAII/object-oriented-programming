@@ -4,8 +4,6 @@
 
 This project is a C++ application designed to encode and decode secret messages using a unique square grid-based diamond pattern. The encoded message is a concatenated string formed by tracing diagonals within nested diamond shapes in the grid.
 
----
-
 ## Problem Description
 
 Claude L. Evers, a top-secret agent, encodes messages using a diamond pattern in a square grid of letters. Messages are written from the middle left, moving diagonally up, right, down, and left, creating nested diamonds until all grid spaces are filled. Any leftover spaces are filled with random letters.
@@ -20,8 +18,6 @@ Encoded message process for "GENERAL TSO NEEDS CHICKEN NOW":
 
 The final encoded string is sent as:  
 `THEESEARENSRNTAEDNCACGEEWNHLTEKOITUALNCSLYRANODOM`
-
----
 
 ## Requirements
 
@@ -39,8 +35,6 @@ The final encoded string is sent as:
 - **Unified Modeling Language**
   - Produce an accurate and detailed UML for each class used in the program.
 
----
-
 ## Sample Messages
 
 ### Encoded and Decoded Examples
@@ -50,8 +44,6 @@ The final encoded string is sent as:
    **Decoded**: `GENERALTSOHATESCHICKENIEL`
 3. **Encoded**: `JOMHNPARTAILUUHLASERINWGO`  
    **Decoded**: `IAMTHEWALRUSU`
-
----
 
 ## Program Features
 
@@ -70,8 +62,6 @@ The final encoded string is sent as:
   - Non-numeric grid sizes
   - Invalid file names
   - Incorrect grid lengths
-
----
 
 ## UML Design
 
