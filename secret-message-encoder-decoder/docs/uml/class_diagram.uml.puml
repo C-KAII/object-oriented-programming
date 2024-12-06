@@ -1,0 +1,122 @@
+@startuml week11_class_diagram
+'skinparam ClassAttributeIconSize 0
+
+' Class definitions
+
+class std::exception {}
+
+class CustomException {
+  - exception_message_: std::string
+  + CustomException(*msg: const char):
+  + *what() const noexcept: const char
+}
+
+class GridBoundary {
+  - top_: int
+  - bottom_: int
+  - right_: int
+  + GridBoundary(top: int, bottom: int, right: int):
+  + manipulate_boundary(): void
+  + within_row_bounds(row: int) const: bool
+  + within_col_bounds(col: int) const: bool
+  + is_within_boundary(row: int, col: int) const: bool
+}
+
+class GridOperations {
+  - grid_size_: int
+  - grid_: std::unique_ptr<std::unique_ptr<char[]>[]>
+  + GridOperations():
+  + set_grid_size(size: int): void
+  + process_grid(&message: const std::string, encode_flag: const bool,*decoded_message: std::string): void
+  + get_encoded_message(): std::string
+  - initialise_grid(message: const std::string): void
+  - fill_grid(&message: const std::string, encode_flag: const bool, *decoded_message: std::string): void
+}
+
+class EncoderDecoder {
+  - grid_operations_: std::shared_ptr<GridOperations>
+  + EncoderDecoder():
+  - is_even(x: int): constexpr bool
+  + encode(&message: const std::string, is_auto_grid_size = false: bool): std::string
+  + decode(&encoded_message: const std::string): std::string
+  - prompt_grid_size(min_size: int): int
+}
+
+class FileOperations {
+  + FileOperations():
+  + load_from_file(): std::vector<std::string>
+  + save_to_file(&messages: const std::vector<std::string>): void
+  - get_directory_files(): std::unordered_set<std::string>
+  - file_exists(&file_name: const std::string, &cwd_files: const std::unordered_set<std::string>): bool
+  - generate_default_file_name(&default_iter: int): std::string
+  - prompt_file_name(cwd_files: const std::unordered_set<std::string>, is_new_file: const bool): std::string
+  - get_new_file_name(): std::string
+  - get_existing_file_name(): std::string
+}
+
+enum MessageType {
+  raw,
+  encoded,
+  decoded
+}
+
+class MessageBuffer {
+  - raw_message_: std::string
+  - encoded_message_: std::string
+  - decoded_message_: std::string
+  + MessageBuffer():
+  + set_message(message: const std::string, message_type: const MessageType): void
+  + get_message(message_type: MessageType): std::string
+  + is_empty() const: bool
+  + clear_message_buffer(): void
+}
+
+class Driver {
+  - file_operations_: std::shared_ptr<FileOperations>
+  - encoder_decoder_: std::shared_ptr<EncoderDecoder>
+  - message_buffer_: std::shared_ptr<MessageBuffer>
+  + Driver():
+  + get_message_from_user(): void
+  + get_messages_from_file(): void
+  + encode_user_message(): void
+  + decode_user_message(): void
+  + save_messages_to_file(): void
+  - get_input_message(): std::string
+  - display_messages(&messages: const std::vector<std::string>): void
+  - process_message_selection(&messages: const std::vector<std::string>): void
+  - encode_all_messages(&messages: const std::vector<std::string>): void
+  - decode_all_messages(&messages: const std::vector<std::string>): void
+  - process_messages(&messages: const std::vector<std::string>): void
+}
+
+class UserInterface {
+  - get_menu_option(): int
+  + run_coder: void
+}
+
+object "Global Utility" as Globals {
+  global_max_size: constexr int
+  square(x: int): constexpr int
+  decoded_length(x: int): constexpr int
+  clear_input_buffer(): void
+  string_to_upper(message: std::string): std::string
+  get_user_choice(message_to_user: const std::string): const char
+  is_valid_utf8(c: char): bool
+  sanitise_non_utf8(&input: const std::string): std::string
+}
+
+UserInterface ..> Driver : uses
+Driver ..> FileOperations : uses
+Driver ..> EncoderDecoder : uses
+Driver ..> MessageBuffer : uses
+EncoderDecoder ..> GridOperations : uses
+GridOperations ..> GridBoundary : uses
+CustomException --> std::exception : extends
+
+' Below is purely for re-positioning of graph elements
+MessageType .[hidden]. MessageBuffer
+std::exception .[hidden]. EncoderDecoder
+MessageBuffer .[hidden]. Globals
+FileOperations .[hidden]. Globals
+
+@enduml
